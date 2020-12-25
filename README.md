@@ -27,18 +27,18 @@ Combined segmentation from a set of images is achieved by:
 
 ```
 python MvMMVEMDemo.py 
---data_path #YOUR OWN DATA PATH# 
---image_names #YOUR OWN IMAGE NAMES# 
---atlas_name #YOUR OWN ARLAS NAME# 
---label_intensities 0 255 
---vol_shape 256 256 
---num_subjects 3 
---num_classes 2 
---num_subtypes 2 2 
---transform rigid 
---training_iters 1000 
---EM_steps 3
---bending_energy 1
+--data_path #YOUR OWN DATA PATH#           # data path to load images
+--image_names #YOUR OWN IMAGE NAMES#       # image names
+--atlas_name #YOUR OWN ARLAS NAME#         # atlas name
+--label_intensities 0 255                  # label intensity values
+--vol_shape 256 256                        # image size
+--num_subjects 3                           # number of subjects
+--num_classes 2                            # number of classes
+--num_subtypes 2 2                         # number of subtypes
+--transform rigid                          # transformation type
+--training_iters 1000                      # training iterations
+--EM_steps 3                               # EM update steps
+--bending_energy 1                         # bending energy coefficient
 ```
 
 ## Citation
