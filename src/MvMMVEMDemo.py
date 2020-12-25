@@ -16,27 +16,36 @@ import image_utils
 from MvMMVEM import MvMMVEM
 import metrics
 import matplotlib.pyplot as plt
+import argparse
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='MvMM-Demo')
+    parser.add_argument('--data_path', default='../demo_data', type=str, help='path where to load data')
+    parser.add_argument('--image_names', type=str, nargs='+', help='images to load')
+    parser.add_argument('--atlas_name', type=str, help='atlas to load')
+    parser.add_argument('--label_intensities', type=int, nargs='+', help='label intensities')
+    parser.add_argument('--vol_shape', type=int, nargs=2, help='image size')
+    parser.add_argument('--num_subjects', type=int, help='number of images included in the model')
+    parser.add_argument('--num_classes', type=int, help='number of tissue types')
+    parser.add_argument('--num_subtypes', type=int, nargs='+', help='number of subtypes in each tissue type')
+    parser.add_argument('--transform', type=str, choices=['affine', 'rigid'], help='rigid or affine registration')
+    parser.add_argument('--training_iters', type=int, help='training iterations')
+    parser.add_argument('--EM_steps', type=int, help='EM steps in every iteration')
+    parser.add_argument('--bending_energy', type=float, help='regualarization coefficient for bending energy')
+    args = parser.parse_args()
+
     # load data
-    data_path = '../MvMM_demo'
+    data_path = args.data_path
 
     os.chdir(data_path)
     print(os.getcwd())
 
     # load data
-    # image_names = ['patient1_DE_image_slice12.nii.gz',
-    #                'patient1_DE_image_slice12_aug1.nii.gz',
-    #                'patient1_DE_image_slice12_aug2.nii.gz']
+    images = [image_utils.load_image_nii(name)[0] for name in args.image_names]  # [224, 224, 1]
+    labels = [image_utils.load_image_nii(name.replace('image', 'label'))[0] for name in args.image_names]
 
-    image_names = ['patient1_DE_image_slice12.nii.gz',
-                   'patient1_C0_image_slice5.nii.gz',
-                   'patient1_T2_image_slice3.nii.gz']
-    images = [image_utils.load_image_nii(name)[0] for name in image_names]  # [224, 224, 1]
-    labels = [image_utils.load_image_nii(name.replace('image', 'label'))[0] for name in image_names]
-
-    atlas_label = image_utils.load_image_nii('patient1_C0_label_slice5_affine.nii.gz')[0]
+    atlas_label = image_utils.load_image_nii(args.atlas_name)[0]
     original_atlas = torch.from_numpy(atlas_label).unsqueeze(0).unsqueeze(0).squeeze(-1)
 
     # preprocess data
@@ -44,11 +53,11 @@ if __name__ == '__main__':
     original_images = torch.stack([torch.from_numpy(image) for image in images]).unsqueeze(1).unsqueeze(0)  # [1, 3, 1, 224, 224]
     labels = [label.squeeze(2) for label in labels]
     original_labels = torch.stack([torch.from_numpy(label) for label in labels]).unsqueeze(1).unsqueeze(0)
-    label_intensities = (0, 200, 500, 600)
+
     images = [np.clip(image, np.percentile(image, 1), np.percentile(image, 99)) for image in images]
     images = [image_utils.normalize_image(image, normalization='min-max') for image in images]
-    labels = [image_utils.get_one_hot_label(label, label_intensities, channel_first=True) for label in labels]
-    atlas_label = image_utils.get_one_hot_label(atlas_label.squeeze(2), label_intensities, channel_first=True)
+    labels = [image_utils.get_one_hot_label(label, args.label_intensities, channel_first=True) for label in labels]
+    atlas_label = image_utils.get_one_hot_label(atlas_label.squeeze(2), args.label_intensities, channel_first=True)
 
 
     fig, ax = plt.subplots(4, 3, figsize=(12, 10))
@@ -64,29 +73,33 @@ if __name__ == '__main__':
     Dice = metrics.OverlapMetrics(type='average_foreground_dice')
 
     # instantiate model
-    model = MvMMVEM(vol_shape=(224, 224), num_subjects=3,
-                    num_classes=4, num_subtypes=(2, 2, 2, 2),
-                    flow_scales=(0, 1, 2), mask_sigma=3, transform='affine')
+    model = MvMMVEM(vol_shape=args.vol_shape, num_subjects=args.num_subjects,
+                    num_classes=args.num_classes, num_subtypes=args.num_subtypes,
+                    flow_scales=(0, 1, 2), mask_sigma=3, transform=args.transform)
 
     # initialize parameters
     model.init_parameters(images, prior=prior)
 
 
     # set hyper-parameters
-    training_iters = 5000
-    EM_steps = 3
+    training_iters = args.training_iters
+    EM_steps = args.EM_steps
     display_steps = 20
-    bending_energy = 10
+    bending_energy = args.bending_energy
 
     # set optimizer
-    # optimizer for rigid transformation
-    # optimizer = torch.optim.Adam(params=[{'params': model.rotate_params.parameters(), 'lr': 0.0003},
-    #                                      {'params': model.transl_params.parameters(), 'lr': 0.0003},
-    #                                      {'params': model.vectors.parameters(), 'lr': 0.001}])
+    if args.transform == 'rigid':
+        # optimizer for rigid transformation
+        optimizer = torch.optim.Adam(params=[{'params': model.rotate_params.parameters(), 'lr': 0.0003},
+                                             {'params': model.transl_params.parameters(), 'lr': 0.0003},
+                                             {'params': model.vectors.parameters(), 'lr': 0.001}])
 
-    # optimizer for affine transformation
-    optimizer = torch.optim.Adam(params=[{'params': model.theta.parameters(), 'lr': 0.0003},
-                                         {'params': model.vectors.parameters(), 'lr': 0.001}])
+    elif args.transform == 'affine':
+        # optimizer for affine transformation
+        optimizer = torch.optim.Adam(params=[{'params': model.theta.parameters(), 'lr': 0.0003},
+                                             {'params': model.vectors.parameters(), 'lr': 0.001}])
+    else:
+        raise NotImplementedError
 
     dice = []
     for i in range(model.num_subjects - 1):

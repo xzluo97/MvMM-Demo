@@ -1,0 +1,72 @@
+# Multivariate mixture model in PyTorch
+
+>This is a course project in *Medical Image Analysis* on “Multivariate mixture model for myocardial segmentation combining multi-source images”. The algorithm is re-implemented in PyTorch. The lecture notes for illustration and presentation is also included.
+
+## Getting Started
+
+### Project structure
+
+The project contains PyTorch implementation of the algorithm from Multivariate mixture model on 2D multi-sequence cardiac MR images. The data can be downloaded from [MS-CMRSeg-2019 challenge](https://zmiclab.github.io/projects/mscmrseg19/). The project structure is as follows:
+
+```
+MvMM-Demo
+|-- src
+|	|-- AffineGrid.py                # convert affine matrix to resampling grid
+|	|-- LocalDisplacementEnergy.py   # displacement regularization, bending energy
+|	|-- MvMMVEM.py                   # model construction and EM algorithm
+|	|-- MvMMVEMDemo.py               # Demo: image loading, preprocessing, , model optimization and result visualization
+|	|-- SpatialTransformer.py        # spatial transformation module
+|   |-- image_utils.py               # functions for image loading and preprocessing
+|   |-- metrics.py                   # metrics computation
+|   |-- utils.py                     # utility functions
+```
+
+### Usage
+
+Combined segmentation from a set of images is achieved by:
+
+```
+python MvMMVEMDemo.py 
+--data_path #YOUR OWN DATA PATH# 
+--image_names #YOUR OWN IMAGE NAMES# 
+--atlas_name #YOUR OWN ARLAS NAME# 
+--label_intensities 0 255 
+--vol_shape 256 256 
+--num_subjects 3 
+--num_classes 2 
+--num_subtypes 2 2 
+--transform rigid 
+--training_iters 1000 
+--EM_steps 3
+--bending_energy 1
+```
+
+## Citation
+
+If you found the project useful, please cite our papers as below:
+
+```
+@article{Zhuang2018MvMM,
+  title={Multivariate mixture model for myocardial segmentation combining multi-source images},
+  author={Zhuang, Xiahai},
+  journal={IEEE transactions on pattern analysis and machine intelligence},
+  volume={41},
+  number={12},
+  pages={2933--2946},
+  year={2018},
+  publisher={IEEE}
+}
+
+@inproceedings{Luo2020MvMM-RegNet,
+  title={MvMM-RegNet: A new image registration framework based on multivariate mixture model and neural network estimation},
+  author={Luo, Xinzhe and Zhuang, Xiahai},
+  booktitle={International Conference on Medical Image Computing and Computer-Assisted Intervention},
+  pages={149--159},
+  year={2020},
+  organization={Springer}
+}
+```
+
+## Contact
+
+For any questions or problems please [open an issue](https://github.com/xzluo97/MvMM-Demo/issues/new) on GitHub.
