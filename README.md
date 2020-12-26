@@ -11,11 +11,11 @@ The project contains PyTorch implementation of the algorithm from Multivariate m
 ```
 MvMM-Demo
 |-- src
-|	|-- AffineGrid.py                # convert affine matrix to resampling grid
-|	|-- LocalDisplacementEnergy.py   # displacement regularization, bending energy
-|	|-- MvMMVEM.py                   # model construction and EM algorithm
-|	|-- MvMMVEMDemo.py               # Demo: image loading, preprocessing, , model optimization and result visualization
-|	|-- SpatialTransformer.py        # spatial transformation module
+|   |-- AffineGrid.py                # convert affine matrix to resampling grid
+|   |-- LocalDisplacementEnergy.py   # displacement regularization, bending energy
+|   |-- MvMMVEM.py                   # model construction and EM algorithm
+|   |-- MvMMVEMDemo.py               # Demo: image loading, preprocessing, , model optimization and result visualization
+|   |-- SpatialTransformer.py        # spatial transformation module
 |   |-- image_utils.py               # functions for image loading and preprocessing
 |   |-- metrics.py                   # metrics computation
 |   |-- utils.py                     # utility functions
