@@ -46,7 +46,7 @@ python MvMMVEMDemo.py
 If you found the project useful, please cite our papers as below:
 
 ```
-@article{Zhuang2018MvMM,
+@article{Zhuang2019MvMM,
   title={Multivariate mixture model for myocardial segmentation combining multi-source images},
   author={Zhuang, Xiahai},
   journal={IEEE transactions on pattern analysis and machine intelligence},
