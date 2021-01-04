@@ -14,7 +14,7 @@ MvMM-Demo
 |   |-- AffineGrid.py                # convert affine matrix to resampling grid
 |   |-- LocalDisplacementEnergy.py   # displacement regularization, bending energy
 |   |-- MvMMVEM.py                   # model construction and EM algorithm
-|   |-- MvMMVEMDemo.py               # Demo: image loading, preprocessing, , model optimization and result visualization
+|   |-- MvMMVEMDemo.py               # Demo: image loading, preprocessing, model optimization and result visualization
 |   |-- SpatialTransformer.py        # spatial transformation module
 |   |-- image_utils.py               # functions for image loading and preprocessing
 |   |-- metrics.py                   # metrics computation
