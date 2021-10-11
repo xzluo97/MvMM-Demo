@@ -1,4 +1,4 @@
-# Multivariate mixture model in PyTorch
+# Multivariate Mixture Model for Combined Computing in PyTorch
 
 >This is a course project in *Medical Image Analysis* on “Multivariate mixture model for myocardial segmentation combining multi-source images”. The algorithm is re-implemented in PyTorch. The lecture notes for illustration and presentation is also included.
 
