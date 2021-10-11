@@ -46,24 +46,10 @@ python MvMMVEMDemo.py
 If you found the project useful, please cite our papers as below:
 
 ```
-@article{Zhuang2019MvMM,
-  title={Multivariate mixture model for myocardial segmentation combining multi-source images},
-  author={Zhuang, Xiahai},
-  journal={IEEE transactions on pattern analysis and machine intelligence},
-  volume={41},
-  number={12},
-  pages={2933--2946},
-  year={2019},
-  publisher={IEEE}
-}
-
-@inproceedings{Luo2020MvMM-RegNet,
-  title={MvMM-RegNet: A new image registration framework based on multivariate mixture model and neural network estimation},
-  author={Luo, Xinzhe and Zhuang, Xiahai},
-  booktitle={International Conference on Medical Image Computing and Computer-Assisted Intervention},
-  pages={149--159},
-  year={2020},
-  organization={Springer}
+@misc{Luo2020MultivariateMixtureModel,
+  title={Medical Image Analysis, Multivariate Mixture Model for Combined Computing},
+  author={Xinzhe Luo},
+  year={2020}
 }
 ```
 
