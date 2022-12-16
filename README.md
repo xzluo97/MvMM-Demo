@@ -45,11 +45,14 @@ python MvMMVEMDemo.py
 
 If you found the project useful, please cite our papers as below:
 
-```
-@misc{Luo2020MultivariateMixtureModel,
-  title={Medical Image Analysis, Multivariate Mixture Model for Combined Computing},
-  author={Xinzhe Luo},
-  year={2020}
+```bibtex
+@article{luo2022xmetric,
+  title={X-Metric: An N-Dimensional Information-Theoretic Framework for Groupwise Registration and Deep Combined Computing},
+  author={Luo, Xinzhe and Zhuang, Xiahai},
+  journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  year={2022},
+  publisher={IEEE},
+  doi={10.1109/TPAMI.2022.3225418}
 }
 ```
 
